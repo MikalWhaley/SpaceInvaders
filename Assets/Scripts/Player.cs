@@ -1,21 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class Player : MonoBehaviour
 {
-  public GameObject bullet;
+    //public Enemy enemy; '
+    public GameObject player;
+    public GameObject bullet;
+    private Animator ComAnimator;
 
-  public Transform shottingOffset;
+    public Transform shottingOffset;
     // Update is called once per frame
+
+    private void Start()
+    {
+        ComAnimator = this.GetComponent<Animator>();
+        //enemy.GetComponent<Enemy>();
+    }
     void Update()
     {
       if (Input.GetKeyDown(KeyCode.Space))
       {
         GameObject shot = Instantiate(bullet, shottingOffset.position, Quaternion.identity);
-        //Debug.Log("Bang!");
+            ComAnimator.Play("player_shoot");
+            //Debug.Log("Bang!");
 
-        Destroy(shot, 3f);
+            Destroy(shot, 3f);
 
       }
 
@@ -36,6 +48,9 @@ public class Player : MonoBehaviour
     {
         Destroy(gameObject);
         Destroy(collision.gameObject);
+        SceneManager.LoadScene("Credits");
+        //enemy.GetComponent<Enemy>().resetAmp();
+        //enemy.resetAmp();
 
     }
 }

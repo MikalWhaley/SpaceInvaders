@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
     public GameObject particle;
     bool bounceRight = true;
     public static int amp = 1;
+    private Animator ComAnimator;
 
     public ScoreManager scoreManager;
 
@@ -19,6 +20,8 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+        amp = 1;
+        ComAnimator = this.GetComponent<Animator>();
 
     }
 
@@ -33,8 +36,17 @@ public class Enemy : MonoBehaviour
         GameObject particles = Instantiate(particle, transform.position, Quaternion.identity);
         Destroy(particles, 2f);
         amp++;
+        if (amp == 5)
+        {
+            SceneManager.LoadScene("Credits");
+            amp = 1;
+        }
 
 
+    }
+    public void resetAmp()
+    {
+        amp = 1;
     }
 
     void Update()
@@ -54,6 +66,7 @@ public class Enemy : MonoBehaviour
         if (num == 1)
         {
             GameObject shot = Instantiate(enemyBullet, EnemyshootingOffset.position, Quaternion.identity);
+            ComAnimator.Play("enemy_shoot");
             //Debug.Log("Bang!");
 
             Destroy(shot, 3f);
@@ -78,6 +91,8 @@ public class Enemy : MonoBehaviour
                 bounceRight = true;
             }
         }
+
+        
     }
 
 }
